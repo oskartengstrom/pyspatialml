@@ -2326,7 +2326,7 @@ class Raster(_LocIndexer, RasterStatsMixin, RasterPlotMixin):
             bands) at the x,y locations.
         """
         # extract pixel values
-        dtype = np.find_common_type([np.float32], self.dtypes)
+        dtype = np.result_type(np.float32, *self.dtypes)
         X = np.ma.zeros((xys.shape[0], self.count), dtype=dtype)
         t = tqdm(self.loc.values(), total=self.count, disable=not progress)
 
