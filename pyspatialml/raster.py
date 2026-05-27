@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import tempfile
 from collections import namedtuple
 from collections.abc import ValuesView
@@ -199,7 +200,7 @@ class Raster(_LocIndexer, RasterStatsMixin, RasterPlotMixin):
             return
         
         # from a single file path
-        elif isinstance(src, str):
+        elif isinstance(src, (str, os.PathLike)):
             src_layers = []
             r = rasterio.open(src, mode="r", driver=driver)
             for i in range(r.count):
@@ -237,8 +238,8 @@ class Raster(_LocIndexer, RasterStatsMixin, RasterPlotMixin):
 
         # from a list of objects
         elif isinstance(src, list):
-            # list of file paths (str)
-            if all(isinstance(x, str) for x in src):
+            # list of file paths (str or Pathlike obj)
+            if all(isinstance(x, (str, os.PathLike)) for x in src):
                 src_layers = []
                 for f in src:
                     r = rasterio.open(f, mode="r", driver=driver)
